@@ -2,4 +2,11 @@
 version: '2'
 linters:
   default: all
-  disable: [forbidigo, depguard, varnamelen, gochecknoglobals, wsl]
+  disable:
+    - forbidigo
+    - depguard
+    - varnamelen
+    - gochecknoglobals
+    - wsl
+    - wsl_v5
+    - mnd
