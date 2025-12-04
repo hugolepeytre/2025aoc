@@ -7,6 +7,8 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+
+	"aoc2025/grid"
 )
 
 // ReadInput reads to input for the required day to a string.
@@ -80,4 +82,25 @@ func ParseNumbersNoSplit(s string) []int64 {
 	}
 
 	return res
+}
+
+// StringToGrid parses a string as a grid of runes.
+func StringToGrid(input string) grid.Grid[rune] {
+	input = strings.TrimSpace(input)
+	matrix := make([]rune, 0)
+	lines := strings.Split(strings.TrimSpace(input), "\n")
+	height := len(lines)
+	for _, l := range lines {
+		for _, r := range l {
+			matrix = append(matrix, r)
+		}
+	}
+
+	width := len(matrix) / height
+
+	return grid.Grid[rune]{
+		Cells:  matrix,
+		Height: int64(height),
+		Width:  int64(width),
+	}
 }

@@ -10,3 +10,4 @@ linters:
     - wsl
     - wsl_v5
     - mnd
+    - ireturn
