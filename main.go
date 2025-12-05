@@ -10,6 +10,7 @@ import (
 	"aoc2025/day2"
 	"aoc2025/day3"
 	"aoc2025/day4"
+	"aoc2025/day5"
 	"aoc2025/parsing"
 )
 
@@ -18,12 +19,15 @@ var part1 = map[int]func(string){
 	2: day2.Part1,
 	3: day3.Part1,
 	4: day4.Part1,
+	5: day5.Part1,
 }
 
 var part2 = map[int]func(string){
 	1: day1.Part2,
 	2: day2.Part2,
+	3: day3.Part2,
 	4: day4.Part2,
+	5: day5.Part2,
 }
 
 const argsNeeded = 1
