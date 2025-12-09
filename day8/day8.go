@@ -47,9 +47,6 @@ func Part2(input string) {
 
 	lastEdge := edges[i-1]
 	count := lastEdge.b1[0] * lastEdge.b2[0]
-	// fmt.Printf("%+v\n", edges)
-	// fmt.Printf("%+v\n", lastEdge)
-	// fmt.Printf("%+v\n", i)
 	fmt.Printf("Part 2 : %v\n", count)
 }
 

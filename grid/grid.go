@@ -16,12 +16,12 @@ type cellType interface {
 
 // IdxToPos converts slice index to 2d coordinate.
 func (g *Grid[T]) IdxToPos(idx int64) Coord {
-	return Coord{x: idx % g.Width, y: idx / g.Width}
+	return Coord{X: idx % g.Width, Y: idx / g.Width}
 }
 
 // PosToIdx converts 2d coordinate to slice index.
 func (g *Grid[T]) PosToIdx(pos Coord) int64 {
-	return pos.x + pos.y*g.Width
+	return pos.X + pos.Y*g.Width
 }
 
 // Set modifies the element at the given coordinate.
@@ -48,12 +48,12 @@ func (g *Grid[T]) Count(e T) int {
 
 // Inbounds checks if a coordinate is in the grid.
 func (g *Grid[T]) Inbounds(pos Coord) bool {
-	return 0 <= pos.x && pos.x < g.Width && 0 <= pos.y && pos.y < g.Height
+	return 0 <= pos.X && pos.X < g.Width && 0 <= pos.Y && pos.Y < g.Height
 }
 
 // Mvt move on the grid, return false if out of bounds.
 func (g *Grid[T]) Mvt(pos Coord, mvt Coord) (Coord, bool) {
-	newPos := Coord{x: pos.x + mvt.x, y: pos.y + mvt.y}
+	newPos := Coord{X: pos.X + mvt.X, Y: pos.Y + mvt.Y}
 	if g.Inbounds(newPos) {
 		return newPos, true
 	}
@@ -79,44 +79,74 @@ const (
 func (d Direction) Value() Coord {
 	switch d {
 	case Up:
-		return Coord{y: -1, x: 0}
+		return Coord{Y: -1, X: 0}
 	case Down:
-		return Coord{y: 1, x: 0}
+		return Coord{Y: 1, X: 0}
 	case Left:
-		return Coord{y: 0, x: -1}
+		return Coord{Y: 0, X: -1}
 	case Right:
-		return Coord{y: 0, x: 1}
+		return Coord{Y: 0, X: 1}
 	case UpLeft:
-		return Coord{y: -1, x: -1}
+		return Coord{Y: -1, X: -1}
 	case UpRight:
-		return Coord{y: -1, x: 1}
+		return Coord{Y: -1, X: 1}
 	case DownLeft:
-		return Coord{y: 1, x: -1}
+		return Coord{Y: 1, X: -1}
 	case DownRight:
-		return Coord{y: 1, x: 1}
+		return Coord{Y: 1, X: 1}
 	default:
 		panic(fmt.Sprintf("Unknown direction %v", d))
 	}
 }
 
-// IterDirs returns an array of all 8 directions.
-func IterDirs() [8]Direction {
-	return [8]Direction{Up, Down, Left, Right, UpLeft, UpRight, DownLeft, DownRight}
+// Clockwise returns clockwise rotation of the direction.
+func (d Direction) Clockwise() Direction {
+	v := d.Value()
+	newDirV := Coord{X: -v.Y, Y: v.X}
+
+	return fromValue(newDirV)
 }
 
-//     pub fn from_value(value: Complex<i32>) -> Direction {
-//         match value {
-//             Complex { im: -1, re: 0 } => Direction::Up,
-//             Complex { im: 1, re: 0 } => Direction::Down,
-//             Complex { im: 0, re: -1 } => Direction::Left,
-//             Complex { im: 0, re: 1 } => Direction::Right,
-//             Complex { im: -1, re: -1 } => Direction::UpLeft,
-//             Complex { im: -1, re: 1 } => Direction::UpRight,
-//             Complex { im: 1, re: -1 } => Direction::DownLeft,
-//             Complex { im: 1, re: 1 } => Direction::DownRight,
-//             _ => panic!("Invalid direction"),
-//         }
-//     }
+// CounterClockwise returns counter-clockwise rotation of the direction.
+func (d Direction) CounterClockwise() Direction {
+	v := d.Value()
+	newDirV := Coord{X: v.Y, Y: -v.X}
+
+	return fromValue(newDirV)
+}
+
+func fromValue(c Coord) Direction {
+	switch c {
+	case Coord{Y: -1, X: 0}:
+		return Up
+	case Coord{Y: 1, X: 0}:
+		return Down
+	case Coord{Y: 0, X: -1}:
+		return Left
+	case Coord{Y: 0, X: 1}:
+		return Right
+	case Coord{Y: -1, X: -1}:
+		return UpLeft
+	case Coord{Y: -1, X: 1}:
+		return UpRight
+	case Coord{Y: 1, X: -1}:
+		return DownLeft
+	case Coord{Y: 1, X: 1}:
+		return DownRight
+	default:
+		panic(fmt.Sprintf("Unknown direction %v", c))
+	}
+}
+
+// Add adds two Coords together.
+func (c Coord) Add(c2 Coord) Coord {
+	return Coord{X: c.X + c2.X, Y: c.Y + c2.Y}
+}
+
+// CoordFrom returns a coord from a slice of int64 (size needs to be at least 2).
+func CoordFrom(a []int64) Coord {
+	return Coord{X: a[0], Y: a[1]}
+}
 
 //     pub fn counter_clockwise(self) -> Direction {
 //         let v = self.value() * Complex { im: -1, re: 0 };
@@ -128,55 +158,13 @@ func IterDirs() [8]Direction {
 //         Direction::from_value(v)
 //     }
 
-//     pub fn opposite(self) -> Direction {
-//         let v = self.value() * Complex { im: 0, re: -1 };
-//         Direction::from_value(v)
-//     }
-
-//     pub fn from_arrow(a: char) -> Direction {
-//         match a {
-//             '^' => Direction::Up,
-//             '<' => Direction::Left,
-//             '>' => Direction::Right,
-//             'v' => Direction::Down,
-//             c => panic!("Not an arrow: {}", c),
-//         }
-//     }
-
-//     pub fn iter_diags() -> [Direction; 4] {
-//         [
-//             Direction::UpLeft,
-//             Direction::UpRight,
-//             Direction::DownLeft,
-//             Direction::DownRight,
-//         ]
-//     }
-
-//     pub fn iter_straight() -> [Direction; 4] {
-//         [
-//             Direction::Up,
-//             Direction::Down,
-//             Direction::Left,
-//             Direction::Right,
-//         ]
-//     }
-
-//	    pub fn iter() -> [Direction; 8] {
-//	        [
-//	            Direction::Up,
-//	            Direction::Down,
-//	            Direction::Left,
-//	            Direction::Right,
-//	            Direction::UpLeft,
-//	            Direction::UpRight,
-//	            Direction::DownLeft,
-//	            Direction::DownRight,
-//	        ]
-//	    }
-//	}
+// IterDirs returns an array of all 8 directions.
+func IterDirs() [8]Direction {
+	return [8]Direction{Up, Down, Left, Right, UpLeft, UpRight, DownLeft, DownRight}
+}
 
 // Coord represents a 2d coordinate.
 type Coord struct {
-	x int64
-	y int64
+	X int64
+	Y int64
 }

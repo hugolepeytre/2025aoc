@@ -14,6 +14,7 @@ import (
 	"aoc2025/day6"
 	"aoc2025/day7"
 	"aoc2025/day8"
+	"aoc2025/day9"
 	"aoc2025/parsing"
 )
 
@@ -26,6 +27,7 @@ var part1 = map[int]func(string){
 	6: day6.Part1,
 	7: day7.Part1,
 	8: day8.Part1,
+	9: day9.Part1,
 }
 
 var part2 = map[int]func(string){
@@ -37,6 +39,7 @@ var part2 = map[int]func(string){
 	6: day6.Part2,
 	7: day7.Part2,
 	8: day8.Part2,
+	9: day9.Part2,
 }
 
 const argsNeeded = 1
