@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"aoc2025/day1"
+	"aoc2025/day10"
 	"aoc2025/day2"
 	"aoc2025/day3"
 	"aoc2025/day4"
@@ -19,27 +20,29 @@ import (
 )
 
 var part1 = map[int]func(string){
-	1: day1.Part1,
-	2: day2.Part1,
-	3: day3.Part1,
-	4: day4.Part1,
-	5: day5.Part1,
-	6: day6.Part1,
-	7: day7.Part1,
-	8: day8.Part1,
-	9: day9.Part1,
+	1:  day1.Part1,
+	2:  day2.Part1,
+	3:  day3.Part1,
+	4:  day4.Part1,
+	5:  day5.Part1,
+	6:  day6.Part1,
+	7:  day7.Part1,
+	8:  day8.Part1,
+	9:  day9.Part1,
+	10: day10.Part1,
 }
 
 var part2 = map[int]func(string){
-	1: day1.Part2,
-	2: day2.Part2,
-	3: day3.Part2,
-	4: day4.Part2,
-	5: day5.Part2,
-	6: day6.Part2,
-	7: day7.Part2,
-	8: day8.Part2,
-	9: day9.Part2,
+	1:  day1.Part2,
+	2:  day2.Part2,
+	3:  day3.Part2,
+	4:  day4.Part2,
+	5:  day5.Part2,
+	6:  day6.Part2,
+	7:  day7.Part2,
+	8:  day8.Part2,
+	9:  day9.Part2,
+	10: day10.Part2,
 }
 
 const argsNeeded = 1
